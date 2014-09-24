@@ -48,6 +48,7 @@ public class MinAbsSlice {
     public void testFourMixedElements() {
         assertThat(solution(1, 2, -1, 4), is(1));
         assertThat(solution(5, 2, -1, -1), is(0));
+        assertThat(solution(2, -4, 6, -3, 9), is(1));
     }
 
     @Test
