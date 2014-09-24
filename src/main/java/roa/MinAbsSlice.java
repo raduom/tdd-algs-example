@@ -30,10 +30,17 @@ public class MinAbsSlice {
         return min;
     }
 
+    @Test
+    public void testFourMixedElements() {
+        assertThat(solution(1, 2, -1, 4), is(1));
+        assertThat(solution(5, 2, -1, -1), is(0));
+    }
 
     @Test
     public void testThreeMixedElements() {
         assertThat(solution(-1, 2, 3), is(1));
+        assertThat(solution(-1, 1, -1), is(0));
+        assertThat(solution(5, 2, -1), is(1));
     }
 
     @Test
