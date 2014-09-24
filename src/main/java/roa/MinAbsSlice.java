@@ -25,8 +25,9 @@ public class MinAbsSlice {
         }
 
         int min = sum(a, 0, 1);
-        min = Math.min(sum(a, 1, 2), min);
         min = Math.min(sum(a, 0, 2), min);
+        min = Math.min(sum(a, 1, 3), min);
+        min = Math.min(sum(a, 0, 3), min);
         return min;
     }
 
