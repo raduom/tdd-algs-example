@@ -20,10 +20,13 @@ public class MinAbsSlice {
     }
 
     public int solution(int... a) {
-        int min = sum(a, 0, a.length);
+        int min = Integer.MAX_VALUE;
+
+        if (a.length >= 1) {
+            min = sum(a, 0, 1);
+        }
 
         if (a.length >= 2) {
-            min = Math.min(sum(a, 0, 1), min);
             min = Math.min(sum(a, 1, 2), min);
             min = Math.min(sum(a, 0, 2), min);
         }
