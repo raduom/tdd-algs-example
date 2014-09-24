@@ -22,12 +22,34 @@ public class MinAbsSlice {
     public int solution(int... a) {
         int min = Integer.MAX_VALUE;
 
-        for (int i=0; i<a.length; i++) {
+        for (int i=0; i<a.length; i++) {  // --> This is n
             min = Math.min(sum(a, i, i+1), min);
-            for (int j=0; j<i; j++) {
+            for (int j=0; j<i; j++) {     // --> This is n
                 min = Math.min(sum(a, j, i+1), min);
             }
         }
+
+//        if (a.length >= 1) {
+//            min = sum(a, 0, 1);
+//        }
+//
+//        if (a.length >= 2) {
+//            min = Math.min(sum(a, 1, 2), min);
+//            min = Math.min(sum(a, 0, 2), min);
+//        }
+//
+//        if (a.length >= 3) {
+//            min = Math.min(sum(a, 2, 3), min);
+//            min = Math.min(sum(a, 1, 3), min);
+//            min = Math.min(sum(a, 0, 3), min);
+//        }
+//
+//        if (a.length >= 4) {
+//            min = Math.min(sum(a, 0, 4), min);
+//            min = Math.min(sum(a, 1, 4), min);
+//            min = Math.min(sum(a, 2, 4), min);
+//            min = Math.min(sum(a, 3, 4), min);
+//        }
 
         return min;
     }
