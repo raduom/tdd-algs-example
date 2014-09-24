@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
  */
 public class MinAbsSlice {
 
-    private int sum(int p, int q, int a[]) {
+    private int sum(int a[], int p, int q) {
         int sum = 0;
         for (int i = p; i < q; i++) {
             sum += a[i];
@@ -19,12 +19,17 @@ public class MinAbsSlice {
         return sum;
     }
 
-    public int solution(int a[]) {
-        return a[0];
+    public int solution(int... a) {
+        return sum(a, 0, a.length);
     }
 
     @Test
     public void testOneElement() {
-        assertThat(solution(new int[] {1}), is(1));
+        assertThat(solution(1), is(1));
+    }
+
+    @Test
+    public void testTwoElements() {
+        assertThat(solution(1, 2), is(3));
     }
 }
