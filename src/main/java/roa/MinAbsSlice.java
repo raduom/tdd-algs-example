@@ -20,7 +20,14 @@ public class MinAbsSlice {
     }
 
     public int solution(int... a) {
-        return sum(a, 0, a.length);
+        if (a.length <= 2) {
+            return sum(a, 0, a.length);
+        }
+
+        int min = sum(a, 0, 1);
+        min = Math.min(sum(a, 1, 2), min);
+        min = Math.min(sum(a, 0, 2), min);
+        return min;
     }
 
 
