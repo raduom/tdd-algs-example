@@ -34,6 +34,34 @@ public class MinAbsSlice {
         return min;
     }
 
+    public int firstSolution(int... a) {
+        int min = Integer.MAX_VALUE;
+
+        if (a.length >= 1) {
+            min = sum(a, 0, 1);
+        }
+
+        if (a.length >= 2) {
+            min = Math.min(sum(a, 1, 2), min);
+            min = Math.min(sum(a, 0, 2), min);
+        }
+
+        if (a.length >= 3) {
+            min = Math.min(sum(a, 2, 3), min);
+            min = Math.min(sum(a, 1, 3), min);
+            min = Math.min(sum(a, 0, 3), min);
+        }
+
+        if (a.length >= 4) {
+            min = Math.min(sum(a, 0, 4), min);  // Notice the repetition of the computation here, since
+            min = Math.min(sum(a, 1, 4), min);  // if we forget about the abs() applied inside sum we could rewrite
+            min = Math.min(sum(a, 2, 4), min);  // it as: sum(a, 0, 3) + a[4]
+            min = Math.min(sum(a, 3, 4), min);  // and since sum(a, 0, 3) was computed previously this is just O(1)
+        }
+
+        return min;
+    }
+
     @Test
     public void testComplexityIsCloseToN() {
         final int BASE = 1000;
