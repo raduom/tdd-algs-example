@@ -25,12 +25,13 @@ public class MinAbsSlice {
         if (a.length >= 2) {
             min = Math.min(sum(a, 0, 1), min);
             min = Math.min(sum(a, 1, 2), min);
+            min = Math.min(sum(a, 0, 2), min);
         }
 
         if (a.length >= 3) {
+            min = Math.min(sum(a, 0, 2), min);
             min = Math.min(sum(a, 0, 1), min);
             min = Math.min(sum(a, 1, 2), min);
-            min = Math.min(sum(a, 0, 2), min);
             min = Math.min(sum(a, 2, 3), min);
             min = Math.min(sum(a, 1, 3), min);
         }
