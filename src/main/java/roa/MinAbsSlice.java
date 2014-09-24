@@ -2,9 +2,9 @@ package roa;
 
 import org.junit.Test;
 
+import static java.lang.Math.*;
+import static java.lang.System.currentTimeMillis;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -12,22 +12,22 @@ import static org.junit.Assert.assertThat;
  */
 public class MinAbsSlice {
 
-    private int sum(int a[], int p, int q) {
+    private int sum(int input[], int p, int q) {
         int sum = 0;
-        for (int i = p; i < q; i++) {
-            sum += a[i];
+        for (int i = p; i < q; i++) {    // --> This is (also) n
+            sum += input[i];
         }
 
-        return Math.abs(sum);
+        return abs(sum);
     }
 
-    public int solution(int... a) {
+    public int solution(int... input) {
         int min = Integer.MAX_VALUE;
 
-        for (int i=0; i<a.length; i++) {  // --> This is n
-            min = Math.min(sum(a, i, i+1), min);
+        for (int i=0; i<input.length; i++) {  // --> This is n
+            min = min(abs(input[i]), min);
             for (int j=0; j<i; j++) {     // --> This is n
-                min = Math.min(sum(a, j, i+1), min);
+                min = min(sum(input, j, i + 1), min);
             }
         }
 
@@ -35,17 +35,28 @@ public class MinAbsSlice {
     }
 
     @Test
-    public void testComplexity() {
-        int[] small = new int[1000];
-        int[] big = new int[4000];
+    public void testComplexityIsCloseToN() {
+        final int BASE = 1000;
+        final int SIZE_MULTIPLIER = 4;
+        int[] low = new int[BASE];
+        int[] high = new int[BASE*SIZE_MULTIPLIER];
 
-        long smallD = System.currentTimeMillis();
-        solution(small);
-        smallD = System.currentTimeMillis() - smallD;
-        long bigD = System.currentTimeMillis();
-        solution(big);
-        bigD = System.currentTimeMillis() - bigD;
-        assertThat(((double) bigD) / smallD, is(lessThan(3d)));
+        long lowTime = timeSolution(low);
+        long highTime = timeSolution(high);
+        long timeMultiplier = round((double) highTime / lowTime);
+        assertThat("The complexity should be close to N (which is N^1) ~ 1",
+                        approximateExponent(timeMultiplier, SIZE_MULTIPLIER), is(1L));
+    }
+
+    private long approximateExponent(long timeMultiplier, int sizeMultiplier) {
+        return round(log(timeMultiplier) / log(sizeMultiplier));
+    }
+
+    private long timeSolution(int[] input) {
+        long now = currentTimeMillis();
+        solution(input);
+        now = currentTimeMillis() - now;
+        return now;
     }
 
     @Test
