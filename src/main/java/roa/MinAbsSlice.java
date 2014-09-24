@@ -16,20 +16,36 @@ public class MinAbsSlice {
             sum += a[i];
         }
 
-        return sum;
+        return Math.abs(sum);
     }
 
     public int solution(int... a) {
         return sum(a, 0, a.length);
     }
 
+
     @Test
-    public void testOneElement() {
+    public void testThreeMixedElements() {
+        assertThat(solution(-1, 2, 3), is(1));
+    }
+
+    @Test
+    public void testTowMixedElements() {
+        assertThat(solution(-1, 2), is(1));
+    }
+
+    @Test
+    public void testOneNegativeElement() {
+        assertThat(solution(-1), is(1));
+    }
+
+    @Test
+    public void testOnePositiveElement() {
         assertThat(solution(1), is(1));
     }
 
     @Test
-    public void testTwoElements() {
+    public void testTwoPositiveElements() {
         assertThat(solution(1, 2), is(3));
     }
 }
