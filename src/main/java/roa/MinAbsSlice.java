@@ -3,6 +3,8 @@ package roa;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -29,29 +31,21 @@ public class MinAbsSlice {
             }
         }
 
-//        if (a.length >= 1) {
-//            min = sum(a, 0, 1);
-//        }
-//
-//        if (a.length >= 2) {
-//            min = Math.min(sum(a, 1, 2), min);
-//            min = Math.min(sum(a, 0, 2), min);
-//        }
-//
-//        if (a.length >= 3) {
-//            min = Math.min(sum(a, 2, 3), min);
-//            min = Math.min(sum(a, 1, 3), min);
-//            min = Math.min(sum(a, 0, 3), min);
-//        }
-//
-//        if (a.length >= 4) {
-//            min = Math.min(sum(a, 0, 4), min);
-//            min = Math.min(sum(a, 1, 4), min);
-//            min = Math.min(sum(a, 2, 4), min);
-//            min = Math.min(sum(a, 3, 4), min);
-//        }
-
         return min;
+    }
+
+    @Test
+    public void testComplexity() {
+        int[] small = new int[1000];
+        int[] big = new int[4000];
+
+        long smallD = System.currentTimeMillis();
+        solution(small);
+        smallD = System.currentTimeMillis() - smallD;
+        long bigD = System.currentTimeMillis();
+        solution(big);
+        bigD = System.currentTimeMillis() - bigD;
+        assertThat(((double) bigD) / smallD, is(lessThan(3d)));
     }
 
     @Test
