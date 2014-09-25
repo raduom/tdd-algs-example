@@ -15,7 +15,7 @@ public class MinAbsSlice {
 
     private int sum(int input[], int p, int q) {
         int sum = 0;
-        for (int i = p; i < q; i++) {    // --> This is (also) n
+        for (int i = p; i < q; i++) {
             sum += input[i];
         }
 
@@ -33,8 +33,8 @@ public class MinAbsSlice {
                 memoized[i] = memoized[i-1] + input[i];
             }
 
-            min = min(memoized[i], min);
-            for (int j=1; j<i; j++) {
+            min = min(abs(memoized[i]), min);
+            for (int j=0; j<i; j++) {
                 min = min(abs(memoized[i] - memoized[j]), min);
             }
         }
@@ -47,7 +47,7 @@ public class MinAbsSlice {
         int[] memoized = new int [a.length];
 
         if (a.length >= 1) {
-            memoized[0] = sum(a, 0, 1);
+            memoized[0] = a[0];
             min = abs(memoized[0]);
         }
 
