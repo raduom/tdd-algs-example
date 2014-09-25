@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static java.lang.Math.*;
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.in;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -22,41 +23,42 @@ public class MinAbsSlice {
     }
 
     public int solution(int... input) {
-        int min = Integer.MAX_VALUE;
-
-        for (int i=0; i<input.length; i++) {  // --> This is n
-            min = min(abs(input[i]), min);
-            for (int j=0; j<i; j++) {     // --> This is n
-                min = min(abs(sum(input, j, i + 1)), min);
-            }
-        }
-
-        return min;
+        return firstSolution(input);
+//        int min = Integer.MAX_VALUE;
+//
+//        for (int i=0; i<input.length; i++) {  // --> This is n
+//            min = min(abs(input[i]), min);
+//            for (int j=0; j<i; j++) {     // --> This is n
+//                min = min(abs(sum(input, j, i + 1)), min);
+//            }
+//        }
+//
+//        return min;
     }
 
     public int firstSolution(int... a) {
         int min = Integer.MAX_VALUE;
 
         if (a.length >= 1) {
-            min = sum(a, 0, 1);
+            min = abs(sum(a, 0, 1));
         }
 
         if (a.length >= 2) {
-            min = Math.min(sum(a, 1, 2), min);
-            min = Math.min(sum(a, 0, 2), min);
+            min = Math.min(abs(sum(a, 1, 2)), min);
+            min = Math.min(abs(sum(a, 0, 1) + a[1]), min);
         }
 
         if (a.length >= 3) {
-            min = Math.min(sum(a, 2, 3), min);
-            min = Math.min(sum(a, 1, 3), min);
-            min = Math.min(sum(a, 0, 3), min);
+            min = Math.min(abs(sum(a, 2, 3)), min);
+            min = Math.min(abs(sum(a, 1, 2) + a[2]), min); // (1,3)
+            min = Math.min(abs(sum(a, 0, 2) + a[2]), min); // (0,3)
         }
 
         if (a.length >= 4) {
-            min = Math.min(sum(a, 0, 4), min);  // Notice the repetition of the computation here, since
-            min = Math.min(sum(a, 1, 4), min);  // if we forget about the abs() applied inside sum we could rewrite
-            min = Math.min(sum(a, 2, 4), min);  // it as: sum(a, 0, 3) + a[4]
-            min = Math.min(sum(a, 3, 4), min);  // and since sum(a, 0, 3) was computed previously this is just O(1)
+            min = Math.min(abs(sum(a, 0, 3) + a[3]), min);  // (0, 4)
+            min = Math.min(abs(sum(a, 1, 3) + a[3]), min);  // (1, 4)
+            min = Math.min(abs(sum(a, 2, 3) + a[3]), min);  // (2, 4)
+            min = Math.min(abs(sum(a, 3, 3) + a[3]), min);  // (3, 4)
         }
 
         return min;
