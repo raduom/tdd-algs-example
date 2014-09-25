@@ -18,7 +18,7 @@ public class MinAbsSlice {
             sum += input[i];
         }
 
-        return abs(sum);
+        return sum;
     }
 
     public int solution(int... input) {
@@ -27,7 +27,7 @@ public class MinAbsSlice {
         for (int i=0; i<input.length; i++) {  // --> This is n
             min = min(abs(input[i]), min);
             for (int j=0; j<i; j++) {     // --> This is n
-                min = min(sum(input, j, i + 1), min);
+                min = min(abs(sum(input, j, i + 1)), min);
             }
         }
 
