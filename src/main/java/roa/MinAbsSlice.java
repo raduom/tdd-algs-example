@@ -38,27 +38,32 @@ public class MinAbsSlice {
 
     public int firstSolution(int... a) {
         int min = Integer.MAX_VALUE;
+        int[] memoized = new int [a.length];
 
         if (a.length >= 1) {
-            min = abs(sum(a, 0, 1));
+            memoized[0] = sum(a, 0, 1);
+            min = abs(memoized[0]);
         }
 
         if (a.length >= 2) {
-            min = Math.min(abs(sum(a, 1, 2)), min);
-            min = Math.min(abs(sum(a, 0, 1) + a[1]), min);
+            memoized[1] = memoized[0] + a[1];
+            min = Math.min(abs(memoized[1] - memoized[0]), min);
+            min = Math.min(abs(memoized[1]), min);
         }
 
         if (a.length >= 3) {
-            min = Math.min(abs(sum(a, 2, 3)), min);
-            min = Math.min(abs(sum(a, 1, 2) + a[2]), min); // (1,3)
-            min = Math.min(abs(sum(a, 0, 2) + a[2]), min); // (0,3)
+            memoized[2] = memoized[1] + a[2];
+            min = Math.min(abs(memoized[2] - memoized[1]), min);
+            min = Math.min(abs(memoized[2] - memoized[0]), min);
+            min = Math.min(abs(memoized[2]), min);
         }
 
         if (a.length >= 4) {
-            min = Math.min(abs(sum(a, 0, 3) + a[3]), min);  // (0, 4)
-            min = Math.min(abs(sum(a, 1, 3) + a[3]), min);  // (1, 4)
-            min = Math.min(abs(sum(a, 2, 3) + a[3]), min);  // (2, 4)
-            min = Math.min(abs(sum(a, 3, 3) + a[3]), min);  // (3, 4)
+            memoized[3] = memoized[2] + a[3];
+            min = Math.min(abs(memoized[3]), min);
+            min = Math.min(abs(memoized[3] - memoized[0]), min);
+            min = Math.min(abs(memoized[3] - memoized[1]), min);
+            min = Math.min(abs(memoized[3] - memoized[2]), min);
         }
 
         return min;
