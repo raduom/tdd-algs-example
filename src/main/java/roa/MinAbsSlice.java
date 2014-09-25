@@ -23,17 +23,23 @@ public class MinAbsSlice {
     }
 
     public int solution(int... input) {
-        return firstSolution(input);
-//        int min = Integer.MAX_VALUE;
-//
-//        for (int i=0; i<input.length; i++) {  // --> This is n
-//            min = min(abs(input[i]), min);
-//            for (int j=0; j<i; j++) {     // --> This is n
-//                min = min(abs(sum(input, j, i + 1)), min);
-//            }
-//        }
-//
-//        return min;
+        int min = Integer.MAX_VALUE;
+        int[] memoized = new int[input.length];
+
+        for (int i=0; i<input.length; i++) {
+            if (i == 0) {
+                memoized[i] = input[i];
+            } else {
+                memoized[i] = memoized[i-1] + input[i];
+            }
+
+            min = min(memoized[i], min);
+            for (int j=1; j<i; j++) {
+                min = min(abs(memoized[i] - memoized[j]), min);
+            }
+        }
+
+        return min;
     }
 
     public int firstSolution(int... a) {
