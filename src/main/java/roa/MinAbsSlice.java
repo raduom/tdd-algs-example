@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import static java.lang.Math.*;
 import static java.lang.System.currentTimeMillis;
-import static java.lang.System.in;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -13,63 +12,16 @@ import static org.junit.Assert.assertThat;
  */
 public class MinAbsSlice {
 
-    private int sum(int input[], int p, int q) {
-        int sum = 0;
-        for (int i = p; i < q; i++) {
-            sum += input[i];
-        }
-
-        return sum;
-    }
-
     public int solution(int... input) {
-        int min = Integer.MAX_VALUE;
         int[] memoized = new int[input.length];
+        memoized[0] = input[0];
+        int min = abs(memoized[0]);
 
-        for (int i=0; i<input.length; i++) {
-            if (i == 0) {
-                memoized[i] = input[i];
-            } else {
-                memoized[i] = memoized[i-1] + input[i];
-            }
-
+        for (int i=1; i<input.length; i++) {
+            memoized[i] = memoized[i-1] + input[i];
             min = min(abs(memoized[i]), min);
-            for (int j=0; j<i; j++) {
+            for (int j=0; j<i; j++)
                 min = min(abs(memoized[i] - memoized[j]), min);
-            }
-        }
-
-        return min;
-    }
-
-    public int firstSolution(int... a) {
-        int min = Integer.MAX_VALUE;
-        int[] memoized = new int [a.length];
-
-        if (a.length >= 1) {
-            memoized[0] = a[0];
-            min = abs(memoized[0]);
-        }
-
-        if (a.length >= 2) {
-            memoized[1] = memoized[0] + a[1];
-            min = Math.min(abs(memoized[1] - memoized[0]), min);
-            min = Math.min(abs(memoized[1]), min);
-        }
-
-        if (a.length >= 3) {
-            memoized[2] = memoized[1] + a[2];
-            min = Math.min(abs(memoized[2] - memoized[1]), min);
-            min = Math.min(abs(memoized[2] - memoized[0]), min);
-            min = Math.min(abs(memoized[2]), min);
-        }
-
-        if (a.length >= 4) {
-            memoized[3] = memoized[2] + a[3];
-            min = Math.min(abs(memoized[3]), min);
-            min = Math.min(abs(memoized[3] - memoized[0]), min);
-            min = Math.min(abs(memoized[3] - memoized[1]), min);
-            min = Math.min(abs(memoized[3] - memoized[2]), min);
         }
 
         return min;
