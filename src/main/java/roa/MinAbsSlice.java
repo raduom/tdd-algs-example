@@ -65,34 +65,25 @@ public class MinAbsSlice {
 
         if (a.length >= 1) {
             memoized[0] = a[0];
-            mins.add(new IndexedInteger(0, memoized[0]));
             min = abs(memoized[0]);
         }
 
         if (a.length >= 2) {
             memoized[1] = memoized[0] + a[1];
-            mins.add(new IndexedInteger(1, memoized[1]));
-            Optional<Integer> opMin = findMinSolution(mins, a[1], min);
-            if (opMin.isPresent()) {
-                min = opMin.get();
-            }
+            mins.add(new IndexedInteger(0, memoized[0]));
+            min = findMinSolution(mins, memoized[1], min);
         }
 
         if (a.length >= 3) {
             memoized[2] = memoized[1] + a[2];
-            mins.add(new IndexedInteger(2, memoized[2]));
-            Optional<Integer> opMin = findMinSolution(mins, a[2], min);
-            if (opMin.isPresent()) {
-                min = opMin.get();
-            }
+            mins.add(new IndexedInteger(1, memoized[1]));
+            min = findMinSolution(mins, memoized[2], min);
         }
 
         if (a.length >= 4) {
             memoized[3] = memoized[2] + a[3];
-            min = Math.min(abs(memoized[3]), min);
-            min = Math.min(abs(memoized[3] - memoized[0]), min);
-            min = Math.min(abs(memoized[3] - memoized[1]), min);
-            min = Math.min(abs(memoized[3] - memoized[2]), min);
+            mins.add(new IndexedInteger(2, memoized[2]));
+            min = findMinSolution(mins, memoized[3], min);
         }
 
         return min;
@@ -114,17 +105,18 @@ public class MinAbsSlice {
         return new IndexedInteger(0, current);
     }
 
-    public Optional<Integer> findMinSolution(NavigableSet<IndexedInteger> s, int current, int min) {
+    public Integer findMinSolution(NavigableSet<IndexedInteger> s, int current, int min) {
+        min = min(abs(current), min);
         s = s.subSet(fromKey(current), true, toKey(current), true);
         if (s.size() != 0) {
             int bestValue = current > 0 ?
                     s.first().value : s.last().value;
-            if (min > (current + bestValue)) {
-                return Optional.of(abs(current + bestValue));
+            if (min > abs(current - bestValue)) {
+                return abs(current - bestValue);
             }
         }
 
-        return Optional.empty();
+        return min;
     }
 
     @Test
