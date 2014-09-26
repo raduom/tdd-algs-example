@@ -39,51 +39,16 @@ public class MinAbsSlice {
         }
     }
 
-//    public int solution(int... input) {
-//        int[] memoized = new int[input.length];
-//        memoized[0] = input[0];
-//        int min = abs(memoized[0]);
-//
-//        for (int i=1; i<input.length; i++) {
-//            memoized[i] = memoized[i-1] + input[i];
-//            min = min(abs(memoized[i]), min);
-//            for (int j=0; j<i; j++)
-//                min = min(abs(memoized[i] - memoized[j]), min);
-//        }
-//
-//        return min;
-//    }
-
     public int solution(int... input) {
-        return firstSolution(input);
-    }
-
-    public int firstSolution(int... a) {
-        int min = Integer.MAX_VALUE;
-        int[] memoized = new int [a.length];
+        int[] memoized = new int[input.length];
+        memoized[0] = input[0];
+        int min = abs(memoized[0]);
         TreeSet<IndexedInteger> mins = new TreeSet<>();
 
-        if (a.length >= 1) {
-            memoized[0] = a[0];
-            min = abs(memoized[0]);
-        }
-
-        if (a.length >= 2) {
-            memoized[1] = memoized[0] + a[1];
-            mins.add(new IndexedInteger(0, memoized[0]));
-            min = findMinSolution(mins, memoized[1], min);
-        }
-
-        if (a.length >= 3) {
-            memoized[2] = memoized[1] + a[2];
-            mins.add(new IndexedInteger(1, memoized[1]));
-            min = findMinSolution(mins, memoized[2], min);
-        }
-
-        if (a.length >= 4) {
-            memoized[3] = memoized[2] + a[3];
-            mins.add(new IndexedInteger(2, memoized[2]));
-            min = findMinSolution(mins, memoized[3], min);
+        for (int i=1; i<input.length; i++) {
+            memoized[i] = memoized[i-1] + input[i];
+            mins.add(new IndexedInteger(i-1, memoized[i-1]));
+            min = findMinSolution(mins, memoized[i], min);
         }
 
         return min;
@@ -121,7 +86,7 @@ public class MinAbsSlice {
 
     @Test
     public void testComplexityIsCloseToN() {
-        final int BASE = 5000;
+        final int BASE = 5000000;
         final int SIZE_MULTIPLIER = 4;
         int[] low = new int[BASE];
         int[] high = new int[BASE*SIZE_MULTIPLIER];
