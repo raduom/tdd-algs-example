@@ -2,7 +2,8 @@ package roa;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 
 import static java.lang.Math.*;
 import static java.lang.System.currentTimeMillis;
@@ -10,78 +11,60 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
+ * Write a function:
+ *
+ * int solution(int A[], int N);
+ *
+ * That, given a non-empty zero-indexed array A consisting of N integers,
+ * returns the absolute sum of min abs slice.
+ *
  * Created by roa on 24.09.2014.
  */
 public class MinAbsSlice {
-
-    private static class IndexedInteger implements Comparable<IndexedInteger> {
-        public final int index;
-        public final int value;
-
-        private IndexedInteger(int index, int value) {
-            this.index = index;
-            this.value = value;
-        }
-
-        @Override
-        public int compareTo(IndexedInteger o) {
-            if (this.value < o.value) {
-                return -1;
-            } else if (this.value > o.value) {
-                return 1;
-            }
-
-            return 0;
-        }
-
-        public String toString() {
-            return "["+index+"] => " + value;
-        }
-    }
 
     public int solution(int... input) {
         int[] memoized = new int[input.length];
         memoized[0] = input[0];
         int min = abs(memoized[0]);
-        TreeSet<IndexedInteger> mins = new TreeSet<>();
+        TreeSet<Integer> mins = new TreeSet<>();
 
         for (int i=1; i<input.length; i++) {
             memoized[i] = memoized[i-1] + input[i];
-            mins.add(new IndexedInteger(i-1, memoized[i-1]));
+            mins.add(memoized[i-1]);
             min = findMinSolution(mins, memoized[i], min);
         }
 
         return min;
     }
 
-    private IndexedInteger toKey(int current) {
-        if (current > 0) {
-            return new IndexedInteger(0, current);
-        }
-
-        return new IndexedInteger(0, 0);
+    private Integer key(int current, boolean low) {
+        if ((low && current > 0) || (!low && current < 0))
+            return 0;
+        return current;
     }
 
-    private IndexedInteger fromKey(int current) {
-        if (current > 0) {
-            return new IndexedInteger(0, 0);
-        }
-
-        return new IndexedInteger(0, current);
+    private Integer toKey(int current) {
+        return key(current, false);
     }
 
-    public Integer findMinSolution(NavigableSet<IndexedInteger> s, int current, int min) {
+    private Integer fromKey(int current) {
+        return key(current, true);
+    }
+
+    private Integer findMinSolution(NavigableSet<Integer> s, int current, int min) {
         min = min(abs(current), min);
         s = s.subSet(fromKey(current), true, toKey(current), true);
         if (s.size() != 0) {
-            int bestValue = current > 0 ?
-                    s.first().value : s.last().value;
-            if (min > abs(current - bestValue)) {
-                return abs(current - bestValue);
-            }
+            return min(min,
+                       abs(current - getBestValue(s, current)));
         }
 
         return min;
+    }
+
+    private int getBestValue(NavigableSet<Integer> s, int current) {
+        return current > 0 ?
+                s.first() : s.last();
     }
 
     @Test
